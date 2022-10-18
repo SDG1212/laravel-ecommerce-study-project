@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
 use App\View\Components\Newsletter;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,12 @@ Route::post('/subscribe', [Newsletter::class, 'subscribe'])->name('newsletter.su
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::prefix('cart')->controller(CartController::class)->group(function() {
+    Route::post('/add', 'addProduct');
+    Route::post('/edit', 'editProduct');
+    Route::post('/delete', 'deleteProduct');
+    Route::get('/info', 'getInfo');
+});
 
 require __DIR__.'/auth.php';

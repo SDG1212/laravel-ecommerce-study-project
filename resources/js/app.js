@@ -3,8 +3,11 @@ import './bootstrap'
 import { createApp } from 'vue'
 import AlertBoxComponent from '@/components/AlertBoxComponent.vue'
 import CatalogComponent from '@/components/CatalogComponent.vue'
+import Cart from '@/components/CartComponent.vue'
 
 const alertBox = createApp(AlertBoxComponent).mount('#alert-box')
+
+const test = createApp(Cart).mount('#cart')
 
 const catalog = createApp(CatalogComponent).mount('#catalog')
 
