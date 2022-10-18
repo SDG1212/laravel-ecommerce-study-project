@@ -27,16 +27,7 @@ class CartController extends Controller
 
         $request->session()->put('products', $products);
 
-        $products_info = DB::table('products')->select('id', 'name', 'image', 'price')->whereIn('id', array_keys($products))->get();
-
-        $products_info->transform(function($item, $key) use ($products) {
-            $item->quantity = $products[$item->id]['quantity'];
-            $item->total = round($item->price * $item->quantity, 2);
-
-            return $item;
-        });
-
-        return (new CartCollection($products_info));
+        return $this->getCartInfo($request);
     }
 
     public function editProduct(Request $request)
@@ -56,16 +47,7 @@ class CartController extends Controller
 
         $request->session()->put('products', $products);
 
-        $products_info = DB::table('products')->select('id', 'name', 'image', 'price')->whereIn('id', array_keys($products))->get();
-
-        $products_info->transform(function($item, $key) use ($products) {
-            $item->quantity = $products[$item->id]['quantity'];
-            $item->total = round($item->price * $item->quantity, 2);
-
-            return $item;
-        });
-
-        return (new CartCollection($products_info));
+        return $this->getCartInfo($request);
     }
 
     public function deleteProduct(Request $request)
@@ -80,37 +62,28 @@ class CartController extends Controller
 
         $request->session()->put('products', $products);
 
+        return $this->getCartInfo($request);
+    }
+
+    public function getInfo(Request $request)
+    {
+        if ($request->session()->has('products')) {
+            return $this->getCartInfo($request);
+        }
+    }
+
+    private function getCartInfo(Request $request) {
+        $products = $request->session()->get('products');
+
         $products_info = DB::table('products')->select('id', 'name', 'image', 'price')->whereIn('id', array_keys($products))->get();
 
         $products_info->transform(function ($item, $key) use ($products) {
             $item->quantity = $products[$item->id]['quantity'];
-            $item->total = round($item->price * $item->quantity, 2);
+            $item->total = $item->price * $item->quantity;
 
             return $item;
         });
 
         return (new CartCollection($products_info));
-    }
-
-    public function getInfo(Request $request)
-    {
-        $total = 0.0;
-
-        if ($request->session()->has('products')) {
-            $products = $request->session()->get('products');
-
-            $products_info = DB::table('products')->select('id', 'name', 'image', 'price')->whereIn('id', array_keys($products))->get();
-
-            $products_info->transform(function ($item, $key) use ($products) {
-                $item->quantity = $products[$item->id]['quantity'];
-                $item->total = $item->price * $item->quantity;
-
-                return $item;
-            });
-
-            return (new CartCollection($products_info));
-        } else {
-
-        }
     }
 }
