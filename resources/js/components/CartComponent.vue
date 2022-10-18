@@ -43,19 +43,20 @@
         isActive: false
       }
     },
-    created() {
-      axios.get('cart/info')
-        .then((response) => {
-          store.products = response.data.data.products
-          store.total = response.data.data.total
-        })
-        .catch(function(error) {
-          console.log(error)
-        })
-    },
     methods: {
       toggle() {
         this.isActive = this.isActive ? false : true
+
+        if (this.isActive) {
+          axios.get('cart/info')
+            .then((response) => {
+              store.products = response.data.data.products
+              store.total = response.data.data.total
+            })
+            .catch(function(error) {
+              console.log(error)
+            })
+        }
       },
       deleteProduct(id) {
         store.removeProduct(id)
