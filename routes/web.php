@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\View\Components\Newsletter;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::post('/subscribe', [Newsletter::class, 'subscribe'])->name('newsletter.subscribe');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

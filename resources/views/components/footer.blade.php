@@ -1,1 +1,3 @@
-<footer class="footer"></footer>
+<footer class="footer">
+	<x-newsletter></x-newsletter>
+</footer>
