@@ -2,8 +2,11 @@ import './bootstrap'
 
 import { createApp } from 'vue'
 import AlertBoxComponent from '@/components/AlertBoxComponent.vue'
+import CatalogComponent from '@/components/CatalogComponent.vue'
 
 const alertBox = createApp(AlertBoxComponent).mount('#alert-box')
+
+const catalog = createApp(CatalogComponent).mount('#catalog')
 
 document.getElementById('newsletter__form').onsubmit = function(event) {
   event.preventDefault()

@@ -10,7 +10,7 @@
     </head>
     <body>
         @include('components.header')
-        <main class="main"></main>
+        <main id="catalog" class="main"></main>
         @include('components.footer')
         <div id="alert-box"></div>
     </body>
