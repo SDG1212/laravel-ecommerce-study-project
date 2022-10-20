@@ -25,6 +25,7 @@
 }
 
 .search {
+    position: relative;
     flex: 1 0 auto;
     height: 64px;
     border: 1px solid #ddd;
