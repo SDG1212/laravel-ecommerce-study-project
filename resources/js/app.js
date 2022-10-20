@@ -4,12 +4,15 @@ import { createApp } from 'vue'
 import AlertBoxComponent from '@/components/AlertBoxComponent.vue'
 import CatalogComponent from '@/components/CatalogComponent.vue'
 import Cart from '@/components/CartComponent.vue'
+import Search from '@/components/Search.vue'
 
 const alertBox = createApp(AlertBoxComponent).mount('#alert-box')
 
 const test = createApp(Cart).mount('#cart')
 
 const catalog = createApp(CatalogComponent).mount('#catalog')
+
+const search = createApp(Search).mount('#search')
 
 document.getElementById('newsletter__form').onsubmit = function(event) {
   event.preventDefault()
