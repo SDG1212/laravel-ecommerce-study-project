@@ -3,7 +3,7 @@ import './bootstrap'
 import { createApp } from 'vue'
 import AlertBoxComponent from '@/components/AlertBoxComponent.vue'
 import CatalogComponent from '@/components/CatalogComponent.vue'
-import Header from '@/components/Header.vue'
+import Header from '@/components/HeaderComponent.vue'
 
 const header = createApp(Header).mount('#header')
 

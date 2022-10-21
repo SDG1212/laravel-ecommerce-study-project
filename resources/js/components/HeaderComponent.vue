@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import Search from '@/components/Search.vue'
+  import Search from '@/components/SearchComponent.vue'
   import Cart from '@/components/CartComponent.vue'
 
   export default {
