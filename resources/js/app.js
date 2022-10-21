@@ -3,16 +3,13 @@ import './bootstrap'
 import { createApp } from 'vue'
 import AlertBoxComponent from '@/components/AlertBoxComponent.vue'
 import CatalogComponent from '@/components/CatalogComponent.vue'
-import Cart from '@/components/CartComponent.vue'
-import Search from '@/components/Search.vue'
+import Header from '@/components/Header.vue'
+
+const header = createApp(Header).mount('#header')
 
 const alertBox = createApp(AlertBoxComponent).mount('#alert-box')
 
-const test = createApp(Cart).mount('#cart')
-
 const catalog = createApp(CatalogComponent).mount('#catalog')
-
-const search = createApp(Search).mount('#search')
 
 document.getElementById('newsletter__form').onsubmit = function(event) {
   event.preventDefault()
