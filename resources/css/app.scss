@@ -30,18 +30,14 @@
 }
 
 .newsletter {
-    -ms-flex: 1 0 33.3333%;
-    flex: 1 0 33.3333%;
-    max-width: 33.3333%
-}
+  flex: 1 0 33.3333%;
+  max-width: 33.3333%;
 
-@media screen and (max-width: 1024px) {
-    .newsletter {
-        -ms-flex:1 0 100%;
-        flex: 1 0 100%;
-        max-width: 100%;
-        padding: 15px 0
-    }
+  @media screen and (max-width: 1024px) {
+    flex: 1 0 100%;
+    max-width: 100%;
+    padding: 15px 0;
+  }
 }
 
 .newsletter__title {
@@ -121,7 +117,7 @@
     color: transparent
 }
 
-.newsletter__submit.--proccess: :before {
+.newsletter__submit.--proccess::before {
     content:"";
     position: absolute;
     top: 50%;
