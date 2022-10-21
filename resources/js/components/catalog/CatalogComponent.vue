@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import ProductCard from '@/components/ProductCardComponent.vue'
+  import ProductCard from '@/components/catalog/ProductCardComponent.vue'
 
   export default {
     components: { ProductCard },

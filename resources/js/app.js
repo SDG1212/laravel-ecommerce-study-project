@@ -2,8 +2,8 @@ import './bootstrap'
 
 import { createApp } from 'vue'
 import AlertBoxComponent from '@/components/AlertBoxComponent.vue'
-import CatalogComponent from '@/components/CatalogComponent.vue'
-import Header from '@/components/HeaderComponent.vue'
+import CatalogComponent from '@/components/catalog/CatalogComponent.vue'
+import Header from '@/components/header/HeaderComponent.vue'
 
 const header = createApp(Header).mount('#header')
 
