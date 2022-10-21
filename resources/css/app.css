@@ -193,35 +193,3 @@
 .product-card {
     width: 100%;
 }
-
-.catalog__toggler {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 256px;
-    padding: 12px 24px;
-    background: #c70101;
-    background-image: linear-gradient(to left,#c70101 50%,#940101 50%);
-    background-size: 200% 100%;
-    background-position: 100% 0;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    text-transform: uppercase;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1;
-    color: #fff;
-    transition: .2s;
-}
-
-.catalog__toggler.--active {
-    background: #fff;
-    border: 1px solid #940101;
-    color: #333;
-    pointer-events: none;
-}
-
-.catalog__toggler:hover {
-    background-position: 0 0;
-}
