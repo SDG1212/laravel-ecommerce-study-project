@@ -1,7 +1,6 @@
 import './bootstrap'
 
 import { createApp } from 'vue'
-import AlertBoxComponent from '@/components/AlertBoxComponent.vue'
 import CatalogComponent from '@/components/catalog/CatalogComponent.vue'
 import Header from '@/components/header/HeaderComponent.vue'
 
@@ -19,9 +18,35 @@ const header = createApp(Header).directive('click-outside', {
   }
 }).mount('#header')
 
-const alertBox = createApp(AlertBoxComponent).mount('#alert-box')
-
 const catalog = createApp(CatalogComponent).mount('#catalog')
+
+window.alertBox = {
+  show: (type, message) => {
+    window.alertBox.hide()
+
+    let html = document.createElement('div')
+    html.classList.add('alert-box')
+    html.classList.add(`--${type}`)
+
+    html.innerHTML = message
+
+    document.body.appendChild(html)
+
+    document.addEventListener('click', window.alertBox.clickHandler)
+  },
+  hide: ($element) => {
+    document.querySelectorAll('.alert-box').forEach(element => element.remove())
+
+    document.removeEventListener('click', window.alertBox.clickHandler)
+  },
+  clickHandler: () => {
+    if (document.querySelector('.alert-box').contains(event.target)) {
+      return
+    }
+
+    window.alertBox.hide()
+  },
+}
 
 document.getElementById('newsletter__form').onsubmit = function(event) {
   event.preventDefault()
@@ -33,7 +58,7 @@ document.getElementById('newsletter__form').onsubmit = function(event) {
       url: this.action,
       data: new FormData(this),
     }).then(function(response) {
-      alertBox.show(true, 'Вы подписаны на новостную рассылку!')
+      window.alertBox.show('success', 'Вы подписаны на новостную рассылку!')
 
       thisForm.classList.add('--disabled')
 
@@ -41,6 +66,6 @@ document.getElementById('newsletter__form').onsubmit = function(event) {
     }).catch(function (error) {
       let message = Object.values(error.response.data)[0]
 
-      alertBox.show(false, message)
+      window.alertBox.show('error', message)
     })
 }

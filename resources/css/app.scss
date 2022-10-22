@@ -150,6 +150,36 @@
     pointer-events: none
 }
 
+
+.alert-box {
+  display: block;
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  max-width: 480px;
+  padding: 12px 24px;
+  margin: 0 auto;
+  background: #c70101;
+  border-radius: 5px;
+  box-shadow: 0 4px 50px 0 rgb(0 0 0 / 10%);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  z-index: 10001;
+}
+
+.alert-box.--error {
+  background: #c70101;
+}
+
+.alert-box.--success {
+  background: #5faf23;
+}
+
 .main__wrapper {
     width: 100%;
     max-width: 1280px;
