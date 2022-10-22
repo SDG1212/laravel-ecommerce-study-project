@@ -1,5 +1,5 @@
 <template>
-  <div class="cart" v-click-outside="() => { this.isActive = this.isActive ? false : true }">
+  <div class="cart" v-click-outside="() => { this.isActive = false }">
     <button class="cart__toggle" type="button" @click="toggle()">
       <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M509.867,89.6c-2.133-2.133-4.267-4.267-8.533-4.267H96L85.333,29.867c0-4.267-6.4-8.533-10.667-8.533h-64
           C4.267,21.333,0,25.6,0,32c0,6.4,4.267,10.667,10.667,10.667h55.467l51.2,260.267c6.4,34.133,38.4,59.733,72.533,59.733H435.2
