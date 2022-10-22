@@ -1,8 +1,11 @@
 import './bootstrap'
 
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import CatalogComponent from '@/components/catalog/CatalogComponent.vue'
 import Header from '@/components/header/HeaderComponent.vue'
+
+const pinia = createPinia()
 
 const header = createApp(Header).directive('click-outside', {
   mounted(element, binding, vnode) {
@@ -16,7 +19,7 @@ const header = createApp(Header).directive('click-outside', {
   unmounted(element) {
     document.body.removeEventListener('click', element.clickOutsideEvent);
   }
-}).mount('#header')
+}).use(pinia).mount('#header')
 
 const catalog = createApp(CatalogComponent).mount('#catalog')
 
