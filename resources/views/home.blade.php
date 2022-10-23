@@ -12,6 +12,5 @@
         @include('components.header')
         <main id="catalog" class="main"></main>
         @include('components.footer')
-        <div id="alert-box"></div>
     </body>
 </html>
