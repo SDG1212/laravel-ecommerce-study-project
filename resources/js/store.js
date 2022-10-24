@@ -11,6 +11,8 @@ export const useCartStore = defineStore('cart', {
         id: id,
       })
       .then((response) => {
+        window.alertBox.show('success', 'Товар добавлен в корзину!');
+
         this.products = response.data.data.products
         this.total = response.data.data.total
       })

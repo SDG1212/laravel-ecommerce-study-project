@@ -5,24 +5,6 @@ import { createPinia } from 'pinia'
 import CatalogComponent from '@/components/catalog/CatalogComponent.vue'
 import Header from '@/components/header/HeaderComponent.vue'
 
-const pinia = createPinia()
-
-const header = createApp(Header).directive('click-outside', {
-  mounted(element, binding, vnode) {
-    element.clickOutsideEvent = function(event) {
-      if (!(element === event.target || element.contains(event.target))) {
-        binding.value(event, element);
-      }
-    };
-    document.body.addEventListener('click', element.clickOutsideEvent);
-  },
-  unmounted(element) {
-    document.body.removeEventListener('click', element.clickOutsideEvent);
-  }
-}).use(pinia).mount('#header')
-
-const catalog = createApp(CatalogComponent).use(pinia).mount('#catalog')
-
 window.alertBox = {
   show: (type, message) => {
     window.alertBox.hide()
@@ -50,6 +32,24 @@ window.alertBox = {
     window.alertBox.hide()
   },
 }
+
+const pinia = createPinia().use(() => { window.alertBox })
+
+const header = createApp(Header).directive('click-outside', {
+  mounted(element, binding, vnode) {
+    element.clickOutsideEvent = function(event) {
+      if (!(element === event.target || element.contains(event.target))) {
+        binding.value(event, element);
+      }
+    };
+    document.body.addEventListener('click', element.clickOutsideEvent);
+  },
+  unmounted(element) {
+    document.body.removeEventListener('click', element.clickOutsideEvent);
+  }
+}).use(pinia).mount('#header')
+
+const catalog = createApp(CatalogComponent).use(pinia).mount('#catalog')
 
 document.getElementById('newsletter__form').onsubmit = function(event) {
   event.preventDefault()
