@@ -19,6 +19,12 @@ class CartController extends Controller
             $products = [];
         }
 
+        $is_product_exists = DB::table('products')->where('id', '=', $request->input('id'))->count();
+
+        if (!$is_product_exists) {
+            return $this->getCartInfo($request);
+        }
+
         if (!isset($products[$request->input('id')])) {
             $products[$request->input('id')]['quantity'] = 1;
         } else {
@@ -42,6 +48,12 @@ class CartController extends Controller
             'id' => 'integer|required',
             'quantity' => 'integer|min:1|required',
         ]);
+
+        $is_product_exists = DB::table('products')->where('id', '=', $request->input('id'))->count();
+
+        if (!$is_product_exists || !isset($products[$request->input('id')])) {
+            return $this->getCartInfo($request);
+        }
 
         $products[$request->input('id')]['quantity'] = $request->input('quantity');
 
