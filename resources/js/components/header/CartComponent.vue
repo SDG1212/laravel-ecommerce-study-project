@@ -119,9 +119,11 @@
     top: calc(100% + 16px);
     right: 0;
     min-width: 480px;
+    max-height: calc(100vh - 64px - 16px - 16px);
     padding: 24px 16px;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    overflow: auto;
   }
 
   .cart__dropdown.--active {
