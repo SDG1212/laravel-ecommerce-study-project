@@ -1,24 +1,18 @@
 <template>
     <div class="product-card">
         <img :src="image" :alt="name" />
-        <button class="" @click="addProductToCart()">{{ name }}</button>
+        <button class="" @click="addProduct(id)">{{ name }}</button>
     </div>
 </template>
 
 <script>
-  import { store } from '@/store.js'
+  import { mapActions } from 'pinia'
+  import { useCartStore } from '@/store'
 
   export default {
     props: ['id', 'name', 'image'],
-    data() {
-      return {
-        store,
-      }
-    },
     methods: {
-      addProductToCart: function() {
-        store.addProductToCart(this.id)
-      },
+      ...mapActions(useCartStore, ['addProduct']),
     }
   }
 </script>

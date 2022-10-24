@@ -21,7 +21,7 @@ const header = createApp(Header).directive('click-outside', {
   }
 }).use(pinia).mount('#header')
 
-const catalog = createApp(CatalogComponent).mount('#catalog')
+const catalog = createApp(CatalogComponent).use(pinia).mount('#catalog')
 
 window.alertBox = {
   show: (type, message) => {

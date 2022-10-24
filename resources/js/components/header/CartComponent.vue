@@ -12,9 +12,9 @@
           s14.933-32,32-32c17.067,0,32,14.934,32,32S411.733,469.333,394.667,469.333z"></path></svg>
     </button>
     <div class="cart__dropdown" :class="{ '--active': isActive }">
-      <div v-if="!store.products.length" class="cart__title">Корзина пуста</div>
+      <div v-if="!products.length" class="cart__title">Корзина пуста</div>
       <ul v-else class="cart__product-menu">
-        <li v-for="product in store.products" class="cart__product-item">
+        <li v-for="product in products" class="cart__product-item">
           <img class="cart__product-image" :src="product.image" :alt="product.name" />
           <div class="cart__product-info">
             <div class="cart__product-name">{{ product.name }}</div>
@@ -29,31 +29,42 @@
             </div>
           </div>
         </li>
-        <li class="cart__total"><b>Сумма</b>{{ store.total }} грн</li>
+        <li class="cart__total"><b>Сумма</b>{{ total }} грн</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-  import { store } from '@/store.js'
+  import { mapWritableState } from 'pinia'
+  import { mapActions } from 'pinia'
+  import { useCartStore } from '@/store'
 
   export default {
     data() {
       return {
-        store,
         isActive: false
       }
     },
+    computed: {
+      ...mapWritableState(useCartStore, {
+        products: 'products',
+        total: 'total',
+      }),
+    },
     methods: {
+      ...mapActions(useCartStore, {
+        editProductInCart: 'editProduct',
+        deleteProductFromCart: 'deleteProduct',
+      }),
       toggle() {
         this.isActive = this.isActive ? false : true
 
         if (this.isActive) {
           axios.get('cart/info')
             .then((response) => {
-              store.products = response.data.data.products
-              store.total = response.data.data.total
+              this.products = response.data.data.products
+              this.total = response.data.data.total
             })
             .catch(function(error) {
               console.log(error)
@@ -61,10 +72,10 @@
         }
       },
       deleteProduct(id) {
-        store.removeProduct(id)
+        this.deleteProductFromCart(id)
       },
       editProduct(id, event) {
-        store.editProduct(id, event.target.value)
+        this.editProductInCart(id, event.target.value)
       },
       decrementProductQuantity(id, quantity) {
         if (quantity <= 1) {
@@ -72,11 +83,11 @@
         }
 
         quantity -= 1
-        store.editProduct(id, quantity)
+        this.editProductInCart(id, quantity)
       },
       incrementProductQuantity(id, quantity) {
         quantity += 1
-        store.editProduct(id, quantity)
+        this.editProductInCart(id, quantity)
       },
     }
   }
