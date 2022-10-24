@@ -12,7 +12,7 @@
           s14.933-32,32-32c17.067,0,32,14.934,32,32S411.733,469.333,394.667,469.333z"></path></svg>
     </button>
     <div class="cart__dropdown" :class="{ '--active': isActive }">
-      <div v-if="!products.length" class="cart__title">Корзина пуста</div>
+      <div v-if="!products.length" class="cart__title">{{ text_empty_cart }}</div>
       <ul v-else class="cart__product-menu">
         <li v-for="product in products" class="cart__product-item">
           <img class="cart__product-image" :src="product.image" :alt="product.name" />
@@ -43,6 +43,7 @@
   export default {
     data() {
       return {
+        text_empty_cart: '',
         isActive: false
       }
     },
@@ -63,8 +64,14 @@
         if (this.isActive) {
           axios.get('cart/info')
             .then((response) => {
-              this.products = response.data.data.products
-              this.total = response.data.data.total
+              if (response.data.message) {
+                this.text_empty_cart = response.data.message
+                this.products = []
+                this.total = 0.0
+              } else {
+                this.products = response.data.data.products
+                this.total = response.data.data.total
+              }
             })
             .catch(function(error) {
               console.log(error)

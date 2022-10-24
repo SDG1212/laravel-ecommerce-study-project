@@ -69,6 +69,8 @@ class CartController extends Controller
     {
         if ($request->session()->has('products')) {
             return $this->getCartInfo($request);
+        } else {
+            return response()->json(['message' => 'Корзина пуста']);
         }
     }
 
