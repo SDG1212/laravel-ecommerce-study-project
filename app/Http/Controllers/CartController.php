@@ -79,7 +79,7 @@ class CartController extends Controller
 
         $products_info->transform(function ($item, $key) use ($products) {
             $item->quantity = $products[$item->id]['quantity'];
-            $item->total = $item->price * $item->quantity;
+            $item->total = round($item->price * $item->quantity, 2);
 
             return $item;
         });

@@ -17,9 +17,9 @@ class CartCollection extends ResourceCollection
     {
         return [
             'products' => $this->collection,
-            'total' => round($this->collection->sum(function($product) {
+            'total' => number_format($this->collection->sum(function($product) {
                 return $product->total;
-            }), 2),
+            }), 2, '.', ' '),
         ];
     }
 }
