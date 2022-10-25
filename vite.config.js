@@ -24,7 +24,9 @@ export default defineConfig({
                 },
             },
         }),
-        vueI18n({}),
+        vueI18n({
+            compositionOnly: false,
+        }),
     ],
     resolve: {
         alias: {
