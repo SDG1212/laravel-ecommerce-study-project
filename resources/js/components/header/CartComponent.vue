@@ -12,7 +12,7 @@
           s14.933-32,32-32c17.067,0,32,14.934,32,32S411.733,469.333,394.667,469.333z"></path></svg>
     </button>
     <div class="cart__dropdown" :class="{ '--active': isActive }">
-      <div v-if="!products.length" class="cart__title">{{ text_empty_cart }}</div>
+      <div v-if="!products.length" class="cart__title">{{ $t('empty_cart') }}</div>
       <ul v-else class="cart__product-menu">
         <li v-for="product in products" class="cart__product-item">
           <img class="cart__product-image" :src="product.image" :alt="product.name" />
@@ -25,11 +25,11 @@
                 <input @blur="editProduct(product.id, $event)" type="text" :value="product.quantity" size="3" />
                 <button @click="incrementProductQuantity(product.id, (product.quantity))" type="button">+</button>
               </div>
-              <button class="cart__remove" @click="deleteProduct(product.id)" type="button">Удалить</button>
+              <button class="cart__remove" @click="deleteProduct(product.id)" type="button">{{ $t('delete') }}</button>
             </div>
           </div>
         </li>
-        <li class="cart__total"><b>Сумма</b>{{ total }} грн</li>
+        <li class="cart__total"><b>{{ $t('total') }}</b>{{ total }} грн</li>
       </ul>
     </div>
   </div>
@@ -216,3 +216,13 @@
     font-weight: 700;
   }
 </style>
+
+<i18n>
+{
+  ru: {
+    empty_cart: 'Корзина пуста',
+    total: 'Сумма',
+    delete: 'Удалить',
+  }
+}
+</i18n>

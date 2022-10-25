@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { i18n } from '@/i18n.js'
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
@@ -11,7 +12,7 @@ export const useCartStore = defineStore('cart', {
         id: id,
       })
       .then((response) => {
-        window.alertBox.show('success', 'Товар добавлен в корзину!');
+        window.alertBox.show('success', i18n.t('added_to_cart'))
 
         this.products = response.data.data.products
         this.total = response.data.data.total

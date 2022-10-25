@@ -1,5 +1,5 @@
 <template>
-  <button v-if="links.next" class="catalog__toggle" :class="{ '--active': isActive }" type="button">Просмотреть еще</button>
+  <button v-if="links.next" class="catalog__toggle" :class="{ '--active': isActive }" type="button">{{ $t('action') }}</button>
 </template>
 
 <script>
@@ -59,3 +59,11 @@
     }
   }
 </style>
+
+<i18n>
+{
+  ru: {
+    action: 'Просмотреть еще',
+  },
+}
+</i18n>
