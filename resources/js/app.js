@@ -10,7 +10,9 @@ import Catalog from '@/components/catalog/CatalogComponent.vue'
 
 const pinia = createPinia().use(() => { window.alertBox })
 
-const i18n = createI18n({})
+const i18n = createI18n({
+  locale: 'ru',
+})
 
 const app = createApp({})
   .directive('click-outside', clickOutside)
