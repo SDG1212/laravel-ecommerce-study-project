@@ -9,8 +9,12 @@
         @vite(['resources/css/app.scss', 'resources/js/app.js'])
     </head>
     <body>
-        @include('components.header')
-        <main id="catalog" class="main"></main>
-        @include('components.footer')
+        <div id="app">
+            @include('components.header')
+            <main class="main">
+                <Catalog></Catalog>
+            </main>
+            @include('components.footer')
+        </div>
     </body>
 </html>

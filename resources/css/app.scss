@@ -15,6 +15,14 @@
     justify-content: flex-end;
 }
 
+.header__nav-wrapper {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 16px;
+  margin: 0 auto;
+  display: flex;
+}
+
 .main {
 	min-height: calc(100vh - 224px - 320px);
     padding-top: calc(64px + 16px);
