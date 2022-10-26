@@ -43,7 +43,6 @@
   export default {
     data() {
       return {
-        text_empty_cart: '',
         isActive: false
       }
     },
@@ -65,7 +64,6 @@
           axios.get('cart/info')
             .then((response) => {
               if (response.data.message) {
-                this.text_empty_cart = response.data.message
                 this.products = []
                 this.total = 0.0
               } else {
