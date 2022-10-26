@@ -187,27 +187,3 @@
 .alert-box.--success {
   background: #5faf23;
 }
-
-.main__wrapper {
-    width: 100%;
-    max-width: 1280px;
-    padding: 48px 32px;
-    margin: 0 auto;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 30px;
-}
-
-.main__nav {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    padding: 48px 32px;
-}
-
-.product-card {
-    width: 100%;
-}
