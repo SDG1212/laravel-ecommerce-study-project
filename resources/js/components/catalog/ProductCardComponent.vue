@@ -47,6 +47,7 @@
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+      min-height: calc(14px * 2 * 1.3);
       overflow: hidden;
       text-overflow: ellipsis;
       font-size: 14px;
