@@ -11,7 +11,7 @@
           c29.867,0,53.333-23.467,53.333-53.333C448,407.467,424.533,384,394.667,384z M394.667,469.333c-17.067,0-32-14.934-32-32
           s14.933-32,32-32c17.067,0,32,14.934,32,32S411.733,469.333,394.667,469.333z"></path></svg>
     </button>
-    <div class="cart__dropdown" :class="{ '--active': isActive }">
+    <div class="cart__dropdown" :class="{ '--active': isActive, '--visible': isVisible }">
       <div v-if="!products.length" class="cart__title">{{ $t('empty_cart') }}</div>
       <ul v-else class="cart__product-menu">
         <li v-for="product in products" class="cart__product-item">
@@ -43,7 +43,8 @@
   export default {
     data() {
       return {
-        isActive: false
+        isActive: false,
+        isVisible: false,
       }
     },
     computed: {
@@ -61,7 +62,25 @@
         this.isActive = this.isActive ? false : true
 
         if (this.isActive) {
-          axios.get('cart/info')
+          const instance = axios.create();
+
+          instance.interceptors.request.use((config) => {
+            this.isVisible = false;
+
+            return config;
+          }, function (error) {
+            return Promise.reject(error);
+          });
+
+          instance.interceptors.response.use((response) => {
+            this.isVisible = true;
+
+            return response;
+          }, function (error) {
+            return Promise.reject(error);
+          });
+
+          instance.get('cart/info')
             .then((response) => {
               if (response.data.message) {
                 this.products = []
@@ -120,10 +139,13 @@
 
   .cart__dropdown {
     display: none;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: calc(100% + 16px);
     right: 0;
     min-width: 480px;
+    min-height: 120px;
     max-height: calc(100vh - 64px - 16px - 16px);
     padding: 24px 16px;
     background: #fff;
@@ -132,7 +154,33 @@
   }
 
   .cart__dropdown.--active {
+    display: flex;
+  }
+
+  .cart__dropdown:not(.--visible) > * {
+    display: none;
+  }
+
+  .cart__dropdown:not(.--visible):before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -24px;
     display: block;
+    width: 48px;
+    height: 48px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    border-top-color: #940101;
+    animation: spin 1s ease-in-out infinite;
+    z-index: 1;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .cart__dropdown-menu {
@@ -195,8 +243,9 @@
   }
 
   .cart__title {
+    text-align: center;
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 300;
     line-height: 1.2;
   }
