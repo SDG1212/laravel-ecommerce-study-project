@@ -3,16 +3,17 @@
 @tailwind utilities;
 
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-	width: 100%;
-	background: #fff;
-	box-shadow: 0 0 10px 0 rgb(0 0 0 / 25%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 25%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 1;
 }
 
 .header__nav-wrapper {
@@ -24,8 +25,8 @@
 }
 
 .main {
-	min-height: calc(100vh - 224px - 320px);
-    padding-top: calc(64px + 16px);
+  min-height: calc(100vh - 224px - 320px);
+  padding-top: calc(64px + 16px);
 }
 
 .footer {
