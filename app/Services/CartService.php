@@ -21,6 +21,8 @@ class CartService
 	 */
 	public function addProduct(Request $request)
 	{
+		$this->validateAddProduct($request);
+
 		$products = $this->addSessionProduct($request->session(), $request->input('id'));
 
 		return $this->getCartProducts($products);
@@ -31,6 +33,8 @@ class CartService
 	 */
 	public function editProduct(Request $request)
 	{
+		$this->validateEditProduct($request);
+
 		$products = $this->editSessionProduct($request->session(), $request->input('id'), $request->input('quantity'));
 
 		return $this->getCartProducts($products);
@@ -41,6 +45,8 @@ class CartService
 	 */
 	public function deleteProduct(Request $request)
 	{
+		$this->validateDeleteProduct($request);
+
 		$products = $this->deleteSessionProduct($request->session(), $request->input('id'));
 
 		return $this->getCartProducts($products);
@@ -61,8 +67,8 @@ class CartService
 	 */
 	private function validateAddProduct(Request $request)
 	{
-		$validated = $request->validate([
-			'id' => 'required|exists:products',
+		$request->validate([
+			'id' => ['required', 'integer', 'exists:products'],
 		]);
 	}
 
@@ -71,9 +77,9 @@ class CartService
 	 */
 	private function validateEditProduct(Request $request)
 	{
-		$validated = $request->validate([
-			'id' => 'integer|required|exists:products',
-			'quantity' => 'integer|min:1|required',
+		$request->validate([
+			'id' => ['required', 'integer', 'exists:products'],
+			'quantity' => ['required', 'integer', 'min:1'],
 		]);
 	}
 
@@ -82,8 +88,8 @@ class CartService
 	 */
 	private function validateDeleteProduct(Request $request)
 	{
-		$validated = $request->validate([
-			'id' => 'integer|required|exists:products',
+		$request->validate([
+			'id' => ['required', 'integer', 'exists:products'],
 		]);
 	}
 
