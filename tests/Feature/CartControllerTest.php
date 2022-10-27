@@ -24,6 +24,25 @@ class CartControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_add_product_cart_validation()
+    {
+        $response = $this->postJson('cart/add', []);
+
+        $response->assertStatus(422);
+
+        $response = $this->postJson('cart/add', [
+            'id' => '',
+        ]);
+
+        $response->assertStatus(422);
+
+        $response = $this->postJson('cart/add', [
+            'id' => 0,
+        ]);
+
+        $response->assertStatus(422);
+    }
+
     public function test_edit_product_in_cart_method_exists()
     {
         $response = $this->postJson('cart/edit', [
@@ -34,6 +53,31 @@ class CartControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_edit_product_cart_validation()
+    {
+        $response = $this->postJson('cart/edit', []);
+
+        $response->assertStatus(422);
+
+        $response = $this->postJson('cart/edit', []);
+
+        $response->assertStatus(422);
+
+        $response = $this->postJson('cart/edit', [
+            'id' => '',
+            'quantity' => '',
+        ]);
+
+        $response->assertStatus(422);
+
+        $response = $this->postJson('cart/edit', [
+            'id' => 0,
+            'quantity' => 0,
+        ]);
+
+        $response->assertStatus(422);
+    }
+
     public function test_delete_product_from_cart_method_exists()
     {
         $response = $this->postJson('cart/delete', [
@@ -41,5 +85,24 @@ class CartControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+    }
+
+    public function test_delete_product_cart_validation()
+    {
+        $response = $this->postJson('cart/delete', []);
+
+        $response->assertStatus(422);
+
+        $response = $this->postJson('cart/delete', [
+            'id' => '',
+        ]);
+
+        $response->assertStatus(422);
+
+        $response = $this->postJson('cart/delete', [
+            'id' => 0,
+        ]);
+
+        $response->assertStatus(422);
     }
 }
