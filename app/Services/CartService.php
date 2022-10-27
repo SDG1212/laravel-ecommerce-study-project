@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\IProductRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CartService
 {
-	private $productRepository;
+	private IProductRepository $productRepository;
 
 	public function __construct()
 	{

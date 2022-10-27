@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
 
-class ProductRepository
+class ProductRepository implements IProductRepository
 {
 	/**
 	 * Вывод списка товаров.
