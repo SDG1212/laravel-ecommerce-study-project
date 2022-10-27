@@ -5,99 +5,64 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\ProductCollection;
-use App\Http\Resources\CartResource;
+use App\Services\CartService;
 use App\Http\Resources\CartCollection;
 
 class CartController extends Controller
 {
-    public function addProduct(Request $request)
-    {
-        if ($request->session()->exists('products')) {
-            $products = $request->session()->get('products');
-        } else {
-            $products = [];
-        }
+	/**
+	 * The cart service instance.
+	 *
+	 * @var \App\Services\CartService
+	 */
+	private $cartService;
 
-        $is_product_exists = DB::table('products')->where('id', '=', $request->input('id'))->count();
+	public function __construct()
+	{
+		$this->cartService = new CartService();
+	}
 
-        if (!$is_product_exists) {
-            return $this->getCartInfo($request);
-        }
+	/**
+	 * Добавление товара в корзину.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \App\Http\Resources\CartCollection
+	 */
+	public function addProduct(Request $request)
+	{
+		return (new CartCollection($this->cartService->addProduct($request)));
+	}
 
-        if (!isset($products[$request->input('id')])) {
-            $products[$request->input('id')]['quantity'] = 1;
-        } else {
-            $products[$request->input('id')]['quantity'] += 1;
-        }
+	/**
+	 * Редактирование товара в корзине.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \App\Http\Resources\CartCollection
+	 */
+	public function editProduct(Request $request)
+	{
+		return (new CartCollection($this->cartService->editProduct($request)));
+	}
 
-        $request->session()->put('products', $products);
+	/**
+	 * Удаление товара из корзины.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \App\Http\Resources\CartCollection
+	 */
+	public function deleteProduct(Request $request)
+	{
+		return (new CartCollection($this->cartService->deleteProduct($request)));
+	}
 
-        return $this->getCartInfo($request);
-    }
-
-    public function editProduct(Request $request)
-    {
-        if ($request->session()->exists('products')) {
-            $products = $request->session()->get('products');
-        } else {
-            $products = [];
-        }
-
-        $request->validate([
-            'id' => 'integer|required',
-            'quantity' => 'integer|min:1|required',
-        ]);
-
-        $is_product_exists = DB::table('products')->where('id', '=', $request->input('id'))->count();
-
-        if (!$is_product_exists || !isset($products[$request->input('id')])) {
-            return $this->getCartInfo($request);
-        }
-
-        $products[$request->input('id')]['quantity'] = $request->input('quantity');
-
-        $request->session()->put('products', $products);
-
-        return $this->getCartInfo($request);
-    }
-
-    public function deleteProduct(Request $request)
-    {
-        if ($request->session()->exists('products')) {
-            $products = $request->session()->get('products');
-        } else {
-            $products = [];
-        }
-
-        unset($products[(int)$request->input('id')]);
-
-        $request->session()->put('products', $products);
-
-        return $this->getCartInfo($request);
-    }
-
-    public function getInfo(Request $request)
-    {
-        if ($request->session()->has('products')) {
-            return $this->getCartInfo($request);
-        } else {
-            return response()->json(['message' => 'Корзина пуста']);
-        }
-    }
-
-    private function getCartInfo(Request $request) {
-        $products = $request->session()->get('products');
-
-        $products_info = DB::table('products')->select('id', 'name', 'image', 'price')->whereIn('id', array_keys($products))->get();
-
-        $products_info->transform(function ($item, $key) use ($products) {
-            $item->quantity = $products[$item->id]['quantity'];
-            $item->total = round($item->price * $item->quantity, 2);
-
-            return $item;
-        });
-
-        return (new CartCollection($products_info));
-    }
+	/**
+	 * Вывод списка товаров корзины.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \App\Http\Resources\CartCollection
+	 */
+	public function getInfo(Request $request)
+	{
+		return (new CartCollection($this->cartService->getProducts($request)));
+	}
 }
