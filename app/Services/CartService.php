@@ -4,15 +4,17 @@ namespace App\Services;
 
 use App\Repositories\IProductRepository;
 use App\Repositories\ProductRepository;
+use App\Services\CartValidatorService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CartService
 {
 	private IProductRepository $productRepository;
+	private $cartValidatorService;
 
 	public function __construct()
 	{
+		$this->cartValidatorService = new CartValidatorService();
 		$this->productRepository = new ProductRepository();
 	}
 
@@ -21,7 +23,7 @@ class CartService
 	 */
 	public function addProduct(Request $request)
 	{
-		$this->validateAddProduct($request);
+		$this->cartValidatorService->validateAddProduct($request);
 
 		$products = $this->addSessionProduct($request->session(), $request->input('id'));
 
@@ -33,7 +35,7 @@ class CartService
 	 */
 	public function editProduct(Request $request)
 	{
-		$this->validateEditProduct($request);
+		$this->cartValidatorService->validateEditProduct($request);
 
 		$products = $this->editSessionProduct($request->session(), $request->input('id'), $request->input('quantity'));
 
@@ -45,7 +47,7 @@ class CartService
 	 */
 	public function deleteProduct(Request $request)
 	{
-		$this->validateDeleteProduct($request);
+		$this->cartValidatorService->validateDeleteProduct($request);
 
 		$products = $this->deleteSessionProduct($request->session(), $request->input('id'));
 
@@ -60,37 +62,6 @@ class CartService
 		$products = $this->getSessionProducts($request->session());
 
 		return $this->getCartProducts($products);
-	}
-
-	/**
-	 * Проверка присутствия товара в БД при добавлении товара.
-	 */
-	private function validateAddProduct(Request $request)
-	{
-		$request->validate([
-			'id' => ['required', 'integer', 'exists:products'],
-		]);
-	}
-
-	/**
-	 * Проверка присутствия товара в БД и его объема при редактировании товара.
-	 */
-	private function validateEditProduct(Request $request)
-	{
-		$request->validate([
-			'id' => ['required', 'integer', 'exists:products'],
-			'quantity' => ['required', 'integer', 'min:1'],
-		]);
-	}
-
-	/**
-	 * Проверка присутствия товара в БД при удалении товара.
-	 */
-	private function validateDeleteProduct(Request $request)
-	{
-		$request->validate([
-			'id' => ['required', 'integer', 'exists:products'],
-		]);
 	}
 
 	/**
