@@ -11,12 +11,10 @@ use Illuminate\Http\Request;
 class CartService
 {
 	private IProductRepository $productRepository;
-	private $cartValidatorService;
 	private $cartProductService;
 
 	public function __construct()
 	{
-		$this->cartValidatorService = new CartValidatorService();
 		$this->cartProductService = new cartProductService();
 		$this->productRepository = new ProductRepository();
 	}
@@ -26,8 +24,6 @@ class CartService
 	 */
 	public function addProduct(Request $request)
 	{
-		$this->cartValidatorService->validateAddProduct($request);
-
 		$products = $this->cartProductService->addProduct($request->session(), $request->input('id'));
 
 		return $this->getCartProducts($products);
@@ -38,8 +34,6 @@ class CartService
 	 */
 	public function editProduct(Request $request)
 	{
-		$this->cartValidatorService->validateEditProduct($request);
-
 		$products = $this->cartProductService->editProduct($request->session(), $request->input('id'), $request->input('quantity'));
 
 		return $this->getCartProducts($products);
@@ -50,8 +44,6 @@ class CartService
 	 */
 	public function deleteProduct(Request $request)
 	{
-		$this->cartValidatorService->validateDeleteProduct($request);
-
 		$products = $this->cartProductService->deleteProduct($request->session(), $request->input('id'));
 
 		return $this->getCartProducts($products);

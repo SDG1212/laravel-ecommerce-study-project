@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Services\CartService;
+use App\Services\CartValidatorService;
 use App\Http\Resources\CartCollection;
 
 class CartController extends Controller
@@ -17,8 +18,16 @@ class CartController extends Controller
 	 */
 	private $cartService;
 
+	/**
+	 * The cart validator service instance.
+	 *
+	 * @var \App\Services\CartValidatorService
+	 */
+	private $cartValidatorService;
+
 	public function __construct()
 	{
+		$this->cartValidatorService = new CartValidatorService();
 		$this->cartService = new CartService();
 	}
 
@@ -30,6 +39,8 @@ class CartController extends Controller
 	 */
 	public function addProduct(Request $request)
 	{
+		$this->cartValidatorService->validateAddProduct($request);
+
 		$products = $this->cartService->addProduct($request);
 
 		return (new CartCollection($products));
@@ -43,6 +54,8 @@ class CartController extends Controller
 	 */
 	public function editProduct(Request $request)
 	{
+		$this->cartValidatorService->validateEditProduct($request);
+
 		$products = $this->cartService->editProduct($request);
 
 		return (new CartCollection($products));
@@ -56,6 +69,8 @@ class CartController extends Controller
 	 */
 	public function deleteProduct(Request $request)
 	{
+		$this->cartValidatorService->validateDeleteProduct($request);
+
 		$products = $this->cartService->deleteProduct($request);
 
 		return (new CartCollection($products));
