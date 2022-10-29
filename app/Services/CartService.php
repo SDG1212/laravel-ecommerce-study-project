@@ -31,7 +31,7 @@ class CartService
 	 *
 	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
-	 * @return Illuminate\Support\Collection
+	 * @return array
 	 */
 	public function addProduct($session, $id)
 	{
@@ -56,7 +56,7 @@ class CartService
 	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
 	 * @param int $quantity
-	 * @return Illuminate\Support\Collection
+	 * @return array
 	 */
 	public function editProduct($session, $id, $quantity)
 	{
@@ -76,7 +76,7 @@ class CartService
 	 *
 	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
-	 * @return Illuminate\Support\Collection
+	 * @return array
 	 */
 	public function deleteProduct($session, $id)
 	{
@@ -95,7 +95,7 @@ class CartService
 	 * Вывод товаров из корзины.
 	 *
 	 * @param \Illuminate\Session\Store $session
-	 * @return Illuminate\Support\Collection
+	 * @return array
 	 */
 	public function getProducts($session)
 	{
