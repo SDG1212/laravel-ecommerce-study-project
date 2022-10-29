@@ -11,11 +11,9 @@ use Illuminate\Http\Request;
 class CartService
 {
 	private IProductRepository $productRepository;
-	private $cartProductService;
 
 	public function __construct()
 	{
-		$this->cartProductService = new cartProductService();
 		$this->productRepository = new ProductRepository();
 	}
 
@@ -24,7 +22,17 @@ class CartService
 	 */
 	public function addProduct(Request $request)
 	{
-		$products = $this->cartProductService->addProduct($request->session(), $request->input('id'));
+		$products = $this->getSessionProducts($request->session());
+
+		if (!isset($products[$request->input('id')])) {
+			$products[$request->input('id')]['quantity'] = 1;
+		} else {
+			$products[$request->input('id')]['quantity'] += 1;
+		}
+
+		$request->session()->put('products', $products);
+
+		$products = $request->session()->get('products');
 
 		return $this->getCartProducts($products);
 	}
@@ -34,7 +42,13 @@ class CartService
 	 */
 	public function editProduct(Request $request)
 	{
-		$products = $this->cartProductService->editProduct($request->session(), $request->input('id'), $request->input('quantity'));
+		$products = $this->getSessionProducts($request->session());
+
+		$products[$request->input('id')]['quantity'] = $request->input('quantity');
+
+		$request->session()->put('products', $products);
+
+		$products = $request->session()->get('products');
 
 		return $this->getCartProducts($products);
 	}
@@ -44,7 +58,13 @@ class CartService
 	 */
 	public function deleteProduct(Request $request)
 	{
-		$products = $this->cartProductService->deleteProduct($request->session(), $request->input('id'));
+		$products = $this->getSessionProducts($request->session());
+
+		unset($products[$request->input('id')]);
+
+		$request->session()->put('products', $products);
+
+		$products = $request->session()->get('products');
 
 		return $this->getCartProducts($products);
 	}
@@ -54,7 +74,7 @@ class CartService
 	 */
 	public function getProducts(Request $request)
 	{
-		$products = $this->cartProductService->getProducts($request->session());
+		$products = $this->getSessionProducts($request->session());
 
 		return $this->getCartProducts($products);
 	}
@@ -74,5 +94,16 @@ class CartService
 		});
 
 		return $products_info;
+	}
+
+	private function getSessionProducts($session)
+	{
+		if ($session->exists('products')) {
+			$products = $session->get('products');
+		} else {
+			$products = [];
+		}
+
+		return $products;
 	}
 }
