@@ -16,6 +16,11 @@ class CartService
 	 */
 	private IProductRepository $productRepository;
 
+    /**
+     * Create a new service.
+     *
+     * @return void
+     */
 	public function __construct()
 	{
 		$this->productRepository = new ProductRepository();
@@ -26,6 +31,7 @@ class CartService
 	 *
 	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
+	 * @return Illuminate\Support\Collection
 	 */
 	public function addProduct($session, $id)
 	{
@@ -50,6 +56,7 @@ class CartService
 	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
 	 * @param int $quantity
+	 * @return Illuminate\Support\Collection
 	 */
 	public function editProduct($session, $id, $quantity)
 	{
@@ -69,6 +76,7 @@ class CartService
 	 *
 	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
+	 * @return Illuminate\Support\Collection
 	 */
 	public function deleteProduct($session, $id)
 	{
@@ -87,6 +95,7 @@ class CartService
 	 * Вывод товаров из корзины.
 	 *
 	 * @param \Illuminate\Session\Store $session
+	 * @return Illuminate\Support\Collection
 	 */
 	public function getProducts($session)
 	{
@@ -97,6 +106,9 @@ class CartService
 
 	/**
 	 * Вывод списка товаров в корзине.
+	 *
+	 * @param array $products
+	 * @return Illuminate\Support\Collection
 	 */
 	private function getCartProducts($products)
 	{
