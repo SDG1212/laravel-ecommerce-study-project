@@ -30,7 +30,9 @@ class CartController extends Controller
 	 */
 	public function addProduct(Request $request)
 	{
-		return (new CartCollection($this->cartService->addProduct($request)));
+		$products = $this->cartService->addProduct($request);
+
+		return (new CartCollection($products));
 	}
 
 	/**
@@ -41,7 +43,9 @@ class CartController extends Controller
 	 */
 	public function editProduct(Request $request)
 	{
-		return (new CartCollection($this->cartService->editProduct($request)));
+		$products = $this->cartService->editProduct($request);
+
+		return (new CartCollection($products));
 	}
 
 	/**
@@ -52,7 +56,9 @@ class CartController extends Controller
 	 */
 	public function deleteProduct(Request $request)
 	{
-		return (new CartCollection($this->cartService->deleteProduct($request)));
+		$products = $this->cartService->deleteProduct($request);
+
+		return (new CartCollection($products));
 	}
 
 	/**
@@ -63,6 +69,8 @@ class CartController extends Controller
 	 */
 	public function getInfo(Request $request)
 	{
-		return (new CartCollection($this->cartService->getProducts($request)));
+		$products = $this->cartService->getProducts($request);
+
+		return (new CartCollection($products));
 	}
 }
