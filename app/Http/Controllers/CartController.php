@@ -41,7 +41,7 @@ class CartController extends Controller
 	{
 		$this->cartValidatorService->validateAddProduct($request);
 
-		$products = $this->cartService->addProduct($request);
+		$products = $this->cartService->addProduct($request->session(), $request->input('id'));
 
 		return (new CartCollection($products));
 	}
@@ -56,7 +56,7 @@ class CartController extends Controller
 	{
 		$this->cartValidatorService->validateEditProduct($request);
 
-		$products = $this->cartService->editProduct($request);
+		$products = $this->cartService->editProduct($request->session(), $request->input('id'), $request->input('quantity'));
 
 		return (new CartCollection($products));
 	}
@@ -71,7 +71,7 @@ class CartController extends Controller
 	{
 		$this->cartValidatorService->validateDeleteProduct($request);
 
-		$products = $this->cartService->deleteProduct($request);
+		$products = $this->cartService->deleteProduct($request->session(), $request->input('id'));
 
 		return (new CartCollection($products));
 	}
@@ -84,7 +84,7 @@ class CartController extends Controller
 	 */
 	public function getInfo(Request $request)
 	{
-		$products = $this->cartService->getProducts($request);
+		$products = $this->cartService->getProducts($request->session());
 
 		return (new CartCollection($products));
 	}

@@ -5,11 +5,15 @@ namespace App\Services;
 use App\Repositories\IProductRepository;
 use App\Repositories\ProductRepository;
 use App\Services\CartValidatorService;
-use App\Services\CartProductService;
 use Illuminate\Http\Request;
 
 class CartService
 {
+	/**
+	 * The product repository instance.
+	 *
+	 * @var \App\Repositories\IProductRepository
+	 */
 	private IProductRepository $productRepository;
 
 	public function __construct()
@@ -19,62 +23,74 @@ class CartService
 
 	/**
 	 * Добавление товара в корзину.
+	 *
+	 * @param \Illuminate\Session\Store $session
+	 * @param int $id
 	 */
-	public function addProduct(Request $request)
+	public function addProduct($session, $id)
 	{
-		$products = $this->getSessionProducts($request->session());
+		$products = $this->getSessionProducts($session);
 
-		if (!isset($products[$request->input('id')])) {
-			$products[$request->input('id')]['quantity'] = 1;
+		if (!isset($products[$id])) {
+			$products[$id]['quantity'] = 1;
 		} else {
-			$products[$request->input('id')]['quantity'] += 1;
+			$products[$id]['quantity'] += 1;
 		}
 
-		$request->session()->put('products', $products);
+		$session->put('products', $products);
 
-		$products = $request->session()->get('products');
+		$products = $session->get('products');
 
 		return $this->getCartProducts($products);
 	}
 
 	/**
 	 * Редактирование товара в корзине.
+	 *
+	 * @param \Illuminate\Session\Store $session
+	 * @param int $id
+	 * @param int $quantity
 	 */
-	public function editProduct(Request $request)
+	public function editProduct($session, $id, $quantity)
 	{
-		$products = $this->getSessionProducts($request->session());
+		$products = $this->getSessionProducts($session);
 
-		$products[$request->input('id')]['quantity'] = $request->input('quantity');
+		$products[$id]['quantity'] = $quantity;
 
-		$request->session()->put('products', $products);
+		$session->put('products', $products);
 
-		$products = $request->session()->get('products');
+		$products = $session->get('products');
 
 		return $this->getCartProducts($products);
 	}
 
 	/**
 	 * Удаление товара из корзины.
+	 *
+	 * @param \Illuminate\Session\Store $session
+	 * @param int $id
 	 */
-	public function deleteProduct(Request $request)
+	public function deleteProduct($session, $id)
 	{
-		$products = $this->getSessionProducts($request->session());
+		$products = $this->getSessionProducts($session);
 
-		unset($products[$request->input('id')]);
+		unset($products[$id]);
 
-		$request->session()->put('products', $products);
+		$session->put('products', $products);
 
-		$products = $request->session()->get('products');
+		$products = $session->get('products');
 
 		return $this->getCartProducts($products);
 	}
 
 	/**
 	 * Вывод товаров из корзины.
+	 *
+	 * @param \Illuminate\Session\Store $session
 	 */
-	public function getProducts(Request $request)
+	public function getProducts($session)
 	{
-		$products = $this->getSessionProducts($request->session());
+		$products = $this->getSessionProducts($session);
 
 		return $this->getCartProducts($products);
 	}
