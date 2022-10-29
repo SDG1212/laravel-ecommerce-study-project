@@ -35,7 +35,7 @@ class CartService
 	 */
 	public function addProduct($session, $id)
 	{
-		$products = $this->getSessionProducts($session);
+		$products = $this->getProducts($session);
 
 		if (!isset($products[$id])) {
 			$products[$id]['quantity'] = 1;
@@ -47,7 +47,7 @@ class CartService
 
 		$products = $session->get('products');
 
-		return $this->getCartProducts($products);
+		return $products;
 	}
 
 	/**
@@ -60,7 +60,7 @@ class CartService
 	 */
 	public function editProduct($session, $id, $quantity)
 	{
-		$products = $this->getSessionProducts($session);
+		$products = $this->getProducts($session);
 
 		$products[$id]['quantity'] = $quantity;
 
@@ -68,7 +68,7 @@ class CartService
 
 		$products = $session->get('products');
 
-		return $this->getCartProducts($products);
+		return $products;
 	}
 
 	/**
@@ -80,7 +80,7 @@ class CartService
 	 */
 	public function deleteProduct($session, $id)
 	{
-		$products = $this->getSessionProducts($session);
+		$products = $this->getProducts($session);
 
 		unset($products[$id]);
 
@@ -88,7 +88,7 @@ class CartService
 
 		$products = $session->get('products');
 
-		return $this->getCartProducts($products);
+		return $products;
 	}
 
 	/**
@@ -98,33 +98,6 @@ class CartService
 	 * @return Illuminate\Support\Collection
 	 */
 	public function getProducts($session)
-	{
-		$products = $this->getSessionProducts($session);
-
-		return $this->getCartProducts($products);
-	}
-
-	/**
-	 * Вывод списка товаров в корзине.
-	 *
-	 * @param array $products
-	 * @return Illuminate\Support\Collection
-	 */
-	private function getCartProducts($products)
-	{
-		$products_info = $this->productRepository->getTotalProductsByIds(array_keys($products));
-
-		$products_info->transform(function ($item, $key) use ($products) {
-			$item->quantity = $products[$item->id]['quantity'];
-			$item->total = round($item->price * $item->quantity, 2);
-
-			return $item;
-		});
-
-		return $products_info;
-	}
-
-	private function getSessionProducts($session)
 	{
 		if ($session->exists('products')) {
 			$products = $session->get('products');
