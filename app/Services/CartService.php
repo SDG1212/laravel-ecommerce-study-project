@@ -5,16 +5,19 @@ namespace App\Services;
 use App\Repositories\IProductRepository;
 use App\Repositories\ProductRepository;
 use App\Services\CartValidatorService;
+use App\Services\CartProductService;
 use Illuminate\Http\Request;
 
 class CartService
 {
 	private IProductRepository $productRepository;
 	private $cartValidatorService;
+	private $cartProductService;
 
 	public function __construct()
 	{
 		$this->cartValidatorService = new CartValidatorService();
+		$this->cartProductService = new cartProductService();
 		$this->productRepository = new ProductRepository();
 	}
 
@@ -25,7 +28,7 @@ class CartService
 	{
 		$this->cartValidatorService->validateAddProduct($request);
 
-		$products = $this->addSessionProduct($request->session(), $request->input('id'));
+		$products = $this->cartProductService->addProduct($request->session(), $request->input('id'));
 
 		return $this->getCartProducts($products);
 	}
@@ -37,7 +40,7 @@ class CartService
 	{
 		$this->cartValidatorService->validateEditProduct($request);
 
-		$products = $this->editSessionProduct($request->session(), $request->input('id'), $request->input('quantity'));
+		$products = $this->cartProductService->editProduct($request->session(), $request->input('id'), $request->input('quantity'));
 
 		return $this->getCartProducts($products);
 	}
@@ -49,7 +52,7 @@ class CartService
 	{
 		$this->cartValidatorService->validateDeleteProduct($request);
 
-		$products = $this->deleteSessionProduct($request->session(), $request->input('id'));
+		$products = $this->cartProductService->deleteProduct($request->session(), $request->input('id'));
 
 		return $this->getCartProducts($products);
 	}
@@ -59,69 +62,9 @@ class CartService
 	 */
 	public function getProducts(Request $request)
 	{
-		$products = $this->getSessionProducts($request->session());
+		$products = $this->cartProductService->getProducts($request->session());
 
 		return $this->getCartProducts($products);
-	}
-
-	/**
-	 * Получение списка товаров в пользовательской сессии.
-	 */
-	private function getSessionProducts($session)
-	{
-		if ($session->exists('products')) {
-			$products = $session->get('products');
-		} else {
-			$products = [];
-		}
-
-		return $products;
-	}
-
-	/**
-	 * Добавление товара в пользовательскую сессию.
-	 */
-	private function addSessionProduct($session, $id)
-	{
-		$products = $this->getSessionProducts($session);
-
-		if (!isset($products[$id])) {
-			$products[$id]['quantity'] = 1;
-		} else {
-			$products[$id]['quantity'] += 1;
-		}
-
-		$session->put('products', $products);
-
-		return $session->get('products');
-	}
-
-	/**
-	 * Редактирование товара в пользовательской сессии.
-	 */
-	private function editSessionProduct($session, $id, $quantity)
-	{
-		$products = $this->getSessionProducts($session);
-
-		$products[$id]['quantity'] = $quantity;
-
-		$session->put('products', $products);
-
-		return $session->get('products');
-	}
-
-	/**
-	 * Удаление товара из пользовательской сессии.
-	 */
-	private function deleteSessionProduct($session, $id)
-	{
-		$products = $this->getSessionProducts($session);
-
-		unset($products[$id]);
-
-		$session->put('products', $products);
-
-		return $session->get('products');
 	}
 
 	/**
