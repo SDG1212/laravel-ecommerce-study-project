@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repositories\IProductRepository;
 use App\Repositories\ProductRepository;
-use App\Services\CartValidatorService;
 use Illuminate\Http\Request;
 
 class CartService
@@ -16,11 +15,11 @@ class CartService
 	 */
 	private IProductRepository $productRepository;
 
-    /**
-     * Create a new service.
-     *
-     * @return void
-     */
+	/**
+	 * Create a new service.
+	 *
+	 * @return void
+	 */
 	public function __construct()
 	{
 		$this->productRepository = new ProductRepository();
@@ -29,13 +28,12 @@ class CartService
 	/**
 	 * Добавление товара в корзину.
 	 *
-	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
 	 * @return array
 	 */
-	public function addProduct($session, $id)
+	public function addProduct($id)
 	{
-		$products = $this->getProducts($session);
+		$products = session('products', []);
 
 		if (!isset($products[$id])) {
 			$products[$id]['quantity'] = 1;
@@ -43,9 +41,9 @@ class CartService
 			$products[$id]['quantity'] += 1;
 		}
 
-		$session->put('products', $products);
+		session(['products' => $products]);
 
-		$products = $session->get('products');
+		$products = session('products');
 
 		return $products;
 	}
@@ -53,20 +51,19 @@ class CartService
 	/**
 	 * Редактирование товара в корзине.
 	 *
-	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
 	 * @param int $quantity
 	 * @return array
 	 */
-	public function editProduct($session, $id, $quantity)
+	public function editProduct($id, $quantity)
 	{
-		$products = $this->getProducts($session);
+		$products = session('products', []);
 
 		$products[$id]['quantity'] = $quantity;
 
-		$session->put('products', $products);
+		session(['products' => $products]);
 
-		$products = $session->get('products');
+		$products = session('products');
 
 		return $products;
 	}
@@ -74,36 +71,18 @@ class CartService
 	/**
 	 * Удаление товара из корзины.
 	 *
-	 * @param \Illuminate\Session\Store $session
 	 * @param int $id
 	 * @return array
 	 */
-	public function deleteProduct($session, $id)
+	public function deleteProduct($id)
 	{
-		$products = $this->getProducts($session);
+		$products = session('products', []);
 
 		unset($products[$id]);
 
-		$session->put('products', $products);
+		session(['products' => $products]);
 
-		$products = $session->get('products');
-
-		return $products;
-	}
-
-	/**
-	 * Вывод товаров из корзины.
-	 *
-	 * @param \Illuminate\Session\Store $session
-	 * @return array
-	 */
-	public function getProducts($session)
-	{
-		if ($session->exists('products')) {
-			$products = $session->get('products');
-		} else {
-			$products = [];
-		}
+		$products = session('products');
 
 		return $products;
 	}

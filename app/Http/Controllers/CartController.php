@@ -15,6 +15,11 @@ class CartController extends Controller
 	 */
 	private $cartService;
 
+	/**
+	 * Create a new controller.
+	 *
+	 * @return void
+	 */
 	public function __construct()
 	{
 		$this->cartService = new CartService();
@@ -32,7 +37,7 @@ class CartController extends Controller
 			'id' => ['required', 'integer', 'exists:products'],
 		]);
 
-		$this->cartService->addProduct($request->session(), $validated_data['id']);
+		$this->cartService->addProduct($validated_data['id']);
 
 		return (new CartCollection());
 	}
@@ -50,7 +55,7 @@ class CartController extends Controller
 			'quantity' => ['required', 'integer', 'min:1'],
 		]);
 
-		$this->cartService->editProduct($request->session(), $validated_data['id'], $validated_data['quantity']);
+		$this->cartService->editProduct($validated_data['id'], $validated_data['quantity']);
 
 		return (new CartCollection());
 	}
@@ -67,7 +72,7 @@ class CartController extends Controller
 			'id' => ['required', 'integer', 'exists:products'],
 		]);
 
-		$this->cartService->deleteProduct($request->session(), $validated_data['id']);
+		$this->cartService->deleteProduct($validated_data['id']);
 
 		return (new CartCollection());
 	}
@@ -80,8 +85,6 @@ class CartController extends Controller
 	 */
 	public function getInfo(Request $request)
 	{
-		$this->cartService->getProducts($request->session());
-
 		return (new CartCollection());
 	}
 }
