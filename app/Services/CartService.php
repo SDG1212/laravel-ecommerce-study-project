@@ -43,7 +43,7 @@ class CartService
 
 		session(['products' => $products]);
 
-		$products = session('products');
+		$products = $this->getProducts();
 
 		return $products;
 	}
@@ -63,7 +63,7 @@ class CartService
 
 		session(['products' => $products]);
 
-		$products = session('products');
+		$products = $this->getProducts();
 
 		return $products;
 	}
@@ -82,8 +82,26 @@ class CartService
 
 		session(['products' => $products]);
 
-		$products = session('products');
+		$products = $this->getProducts();
 
 		return $products;
 	}
+
+    public function getProducts()
+    {
+        $products = session('products', []);
+
+        $product_ids = array_keys($products);
+
+        $products_info = $this->productRepository->getTotalProductsByIds($product_ids);
+
+        $products = $products_info->map(function ($item, $key) use ($products) {
+            $item->quantity = $products[$item->id]['quantity'];
+            $item->total = round($item->price * $item->quantity, 2);
+
+            return $item;
+        });
+
+        return $products;
+    }
 }

@@ -37,9 +37,9 @@ class CartController extends Controller
 			'id' => ['required', 'integer', 'exists:products'],
 		]);
 
-		$this->cartService->addProduct($validated_data['id']);
+		$products = $this->cartService->addProduct($validated_data['id']);
 
-		return (new CartCollection());
+		return (new CartCollection($products));
 	}
 
 	/**
@@ -55,9 +55,9 @@ class CartController extends Controller
 			'quantity' => ['required', 'integer', 'min:1'],
 		]);
 
-		$this->cartService->editProduct($validated_data['id'], $validated_data['quantity']);
+		$products = $this->cartService->editProduct($validated_data['id'], $validated_data['quantity']);
 
-		return (new CartCollection());
+		return (new CartCollection($products));
 	}
 
 	/**
@@ -72,9 +72,9 @@ class CartController extends Controller
 			'id' => ['required', 'integer', 'exists:products'],
 		]);
 
-		$this->cartService->deleteProduct($validated_data['id']);
+		$products = $this->cartService->deleteProduct($validated_data['id']);
 
-		return (new CartCollection());
+		return (new CartCollection($products));
 	}
 
 	/**
@@ -85,6 +85,8 @@ class CartController extends Controller
 	 */
 	public function getInfo(Request $request)
 	{
-		return (new CartCollection());
+		$products = $this->cartService->getProducts();
+
+		return (new CartCollection($products));
 	}
 }
