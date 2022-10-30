@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\CartService;
-use App\Services\CartValidatorService;
 use App\Http\Resources\CartCollection;
 
 class CartController extends Controller
@@ -16,16 +15,8 @@ class CartController extends Controller
 	 */
 	private $cartService;
 
-	/**
-	 * The cart validator service instance.
-	 *
-	 * @var \App\Services\CartValidatorService
-	 */
-	private $cartValidatorService;
-
 	public function __construct()
 	{
-		$this->cartValidatorService = new CartValidatorService();
 		$this->cartService = new CartService();
 	}
 
@@ -37,9 +28,11 @@ class CartController extends Controller
 	 */
 	public function addProduct(Request $request)
 	{
-		$this->cartValidatorService->validateAddProduct($request);
+		$validated_data = $request->validate([
+			'id' => ['required', 'integer', 'exists:products'],
+		]);
 
-		$this->cartService->addProduct($request->session(), $request->input('id'));
+		$this->cartService->addProduct($request->session(), $validated_data['id']);
 
 		return (new CartCollection());
 	}
@@ -52,9 +45,12 @@ class CartController extends Controller
 	 */
 	public function editProduct(Request $request)
 	{
-		$this->cartValidatorService->validateEditProduct($request);
+		$validated_data = $request->validate([
+			'id' => ['required', 'integer', 'exists:products'],
+			'quantity' => ['required', 'integer', 'min:1'],
+		]);
 
-		$this->cartService->editProduct($request->session(), $request->input('id'), $request->input('quantity'));
+		$this->cartService->editProduct($request->session(), $validated_data['id'], $validated_data['quantity']);
 
 		return (new CartCollection());
 	}
@@ -67,9 +63,11 @@ class CartController extends Controller
 	 */
 	public function deleteProduct(Request $request)
 	{
-		$this->cartValidatorService->validateDeleteProduct($request);
+		$validated_data = $request->validate([
+			'id' => ['required', 'integer', 'exists:products'],
+		]);
 
-		$this->cartService->deleteProduct($request->session(), $request->input('id'));
+		$this->cartService->deleteProduct($request->session(), $validated_data['id']);
 
 		return (new CartCollection());
 	}
