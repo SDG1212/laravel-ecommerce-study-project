@@ -39,5 +39,17 @@ class DatabaseSeeder extends Seeder
         }
 
         DB::table('products')->insert($products);
+
+        $categories = [];
+
+        for ($i = 0; $i < 12; $i++) {
+            $categories[] = [
+                'name' => $faker->words(5, true),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        DB::table('categories')->insert($categories);
     }
 }
