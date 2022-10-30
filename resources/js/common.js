@@ -48,4 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
         window.alertBox.show('error', message)
       })
   }
+
+  document.getElementById('catalog-menu__toggle').addEventListener('click', (event) => {
+    event.preventDefault();
+
+    document.getElementById('catalog-menu').classList.toggle('--active');
+  });
 })
