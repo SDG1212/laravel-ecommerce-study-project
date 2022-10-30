@@ -14,7 +14,7 @@ class ProductRepository implements IProductRepository
 	 */
 	public function getProducts()
 	{
-		$query_results = DB::table('products')->select('id', 'name', 'image')->paginate(12)->onEachSide(1);
+		$query_results = DB::table('products')->select('id', 'name', 'image', 'price')->paginate(12)->onEachSide(1);
 
 		return $query_results;
 	}

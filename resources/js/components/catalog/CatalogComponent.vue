@@ -1,7 +1,7 @@
 <template>
   <div class="catalog" :class="{ '--visible': isVisible }">
     <div class="catalog__wrapper">
-      <ProductCard v-for="product in products" :id="product.id" :name="product.name" :image="product.image"></ProductCard>
+      <ProductCard v-for="product in products" :id="product.id" :name="product.name" :image="product.image" :price="product.price"></ProductCard>
     </div>
     <div class="catalog__nav">
       <Pagination @paginate="paginate" :meta="meta"></Pagination>

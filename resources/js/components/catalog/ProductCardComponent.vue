@@ -5,6 +5,7 @@
       </a>
       <div class="product-card__content">
         <a class="product-card__name" href="#">{{ name }}</a>
+        <div class="product-card__price">{{ price }}</div>
       </div>
       <button class="product-card__add-to-cart" @click="addProduct(id)">{{ $t('add_to_cart') }}</button>
     </div>
@@ -15,7 +16,7 @@
   import { useCartStore } from '@/store'
 
   export default {
-    props: ['id', 'name', 'image'],
+    props: ['id', 'name', 'image', 'price'],
     methods: {
       ...mapActions(useCartStore, ['addProduct']),
     }
@@ -51,7 +52,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 400;
       line-height: 1.3;
       color: #333;
       transition: 0.2s;
@@ -59,6 +60,14 @@
       &:hover {
         color: #940101;
       }
+    }
+
+    &__price {
+      margin: 4px 0 0;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #333;
     }
 
     &__add-to-cart {
