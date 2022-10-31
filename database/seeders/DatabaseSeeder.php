@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $faker->words(5, true),
                 'image' => $faker->imageUrl(640, 480),
                 'price' => $faker->randomFloat(2, 1, 1000000),
+                'quantity' => $faker->randomNumber(2, false),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
