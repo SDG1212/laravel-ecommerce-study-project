@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('catalog-menu__toggle').addEventListener('click', (event) => {
     event.preventDefault();
 
+    document.getElementById('header').classList.toggle('--active');
     document.getElementById('catalog-menu').classList.toggle('--active');
   });
 })

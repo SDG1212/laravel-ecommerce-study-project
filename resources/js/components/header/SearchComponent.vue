@@ -25,6 +25,14 @@
       }
     },
     mounted() {
+      this.$watch('isVisible', () => {
+        if (this.isVisible) {
+          document.getElementById('header').classList.add('--active');
+        } else {
+          document.getElementById('header').classList.remove('--active');
+        }
+      });
+
       this.$watch('text', (text) => {
         axios.post('search', {
           text: this.text,

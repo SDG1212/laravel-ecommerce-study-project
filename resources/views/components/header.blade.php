@@ -1,4 +1,4 @@
-<header class="header">
+<header id="header" class="header">
   <div class="header__nav">
     <div class="header__nav-wrapper">
       <x-catalog-menu></x-catalog-menu>
