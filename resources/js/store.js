@@ -18,7 +18,7 @@ export const useCartStore = defineStore('cart', {
         this.total = response.data.data.total
       })
       .catch(function (error) {
-        console.log(error);
+        window.alertBox.show('error', error.response.data.message);
       });
     },
     editProduct(id, quantity) {
@@ -31,7 +31,7 @@ export const useCartStore = defineStore('cart', {
         this.total = response.data.data.total
       })
       .catch(function (error) {
-        console.log(error);
+        window.alertBox.show('error', error.response.data.message);
       });
     },
     deleteProduct(id) {
@@ -43,7 +43,7 @@ export const useCartStore = defineStore('cart', {
         this.total = response.data.data.total
       })
       .catch(function (error) {
-        console.log(error);
+        window.alertBox.show('error', error.response.data.message);
       });
     },
   },
