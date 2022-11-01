@@ -36,7 +36,28 @@ class CartController extends Controller
 	public function addProduct(Request $request)
 	{
 		$validated_data = $request->validate([
-			'id' => ['required', 'integer', 'exists:products'],
+			'id' => [
+				'required',
+				'integer',
+				'exists:products',
+				function($attribute, $value, $fail) {
+					$products = session('products', []);
+
+					if (isset($products[$value])) {
+						$is_product_available = DB::table('products')->where('quantity', '>=', ++$products[$value]['quantity'])->find($value);
+
+						if (!$is_product_available) {
+							$fail('The quantity is invalid.');
+						}
+					} else {
+						$is_product_available = DB::table('products')->where('quantity', '>=', 1)->find($value);
+
+						if (!$is_product_available) {
+							$fail('The quantity is invalid.');
+						}
+					}
+				}
+			],
 		]);
 
 		$products = $this->cartService->addProduct($validated_data['id']);
