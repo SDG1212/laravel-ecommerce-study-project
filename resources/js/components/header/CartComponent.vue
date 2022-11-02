@@ -10,6 +10,7 @@
           s14.933-32,32-32c17.067,0,32,14.934,32,32S198.4,469.333,181.333,469.333z"></path><path d="M394.667,384c-29.867,0-53.333,23.467-53.333,53.333c0,29.867,23.467,53.333,53.333,53.333
           c29.867,0,53.333-23.467,53.333-53.333C448,407.467,424.533,384,394.667,384z M394.667,469.333c-17.067,0-32-14.934-32-32
           s14.933-32,32-32c17.067,0,32,14.934,32,32S411.733,469.333,394.667,469.333z"></path></svg>
+        <span class="cart__counter">{{ this.products.length }}</span>
     </button>
     <div class="cart__dropdown" :class="{ '--active': isActive, '--visible': isVisible }">
       <div v-if="!products.length" class="cart__title">{{ $t('empty_cart') }}</div>
@@ -130,6 +131,20 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    &__counter {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      min-width: 24px;
+      min-height: 24px;
+      background: #c70101;
+      border-radius: 50%;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 24px;
+      color: #fff;
     }
 
     &__dropdown {
