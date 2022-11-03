@@ -41,6 +41,10 @@ class CartService
 			$products[$id]['quantity'] += 1;
 		}
 
+		$date_added = now();
+
+		$products[$id]['date_added'] = $date_added->toDateTimeString();
+
 		session(['products' => $products]);
 
 		$products = $this->getProducts();
@@ -98,9 +102,12 @@ class CartService
         $products = $products_info->map(function ($item, $key) use ($products) {
             $item->quantity = $products[$item->id]['quantity'];
             $item->total = round($item->price * $item->quantity, 2);
+            $item->date_added = $products[$item->id]['date_added'];
 
             return $item;
-        });
+        })->sortByDesc('date_added');
+
+        $products = $products->values()->all();
 
         return $products;
     }
