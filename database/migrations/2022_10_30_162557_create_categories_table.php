@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('name', 255);
             $table->timestamps();
         });
+
+        Schema::create('category_has_products', function (Blueprint $table) {
+            $table->foreignId('category_id');
+            $table->foreignId('product_id');
+        });
     }
 
     /**
