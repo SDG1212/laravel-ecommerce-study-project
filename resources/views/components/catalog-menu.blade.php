@@ -3,7 +3,7 @@
   <div class="catalog-menu__wrapper">
     <ul class="dropdown-menu">
       @foreach ($categories as $category)
-        <li class="dropdown-menu__item"><a class="dropdown-menu__item-link" href="#">{{ $category->name }}</a></li>
+        <li class="dropdown-menu__item"><a class="dropdown-menu__item-link" href="{{ $category->url }}">{{ $category->name }}</a></li>
       @endforeach
     </ul>
   </div>

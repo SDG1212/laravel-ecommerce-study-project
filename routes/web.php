@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SearchController;
 use App\View\Components\Newsletter;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'home')->name('home');
+
+Route::get('/shop/{category_id}', [CategoryController::class, 'index']);
 
 Route::post('/subscribe', [Newsletter::class, 'subscribe'])->name('newsletter.subscribe');
 

@@ -22,6 +22,12 @@ class CatalogMenu extends Component
 	public function __construct()
 	{
 		$this->categories = DB::table('categories')->select('id', 'name')->get();
+
+		$this->categories->transform(function ($item, $key) {
+			$item->url = url("/shop/{$item->id}");
+
+			return $item;
+		});
 	}
 
 	/**
